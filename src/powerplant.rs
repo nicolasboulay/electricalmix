@@ -15,9 +15,9 @@ pub struct Powerplant {
     controlable: bool,
 }
 
-pub fn sort_co2(p:&mut [Powerplant]) -> &[Powerplant] {
-    p.sort_unstable_by(|a, b| b.co2_per_kwh.cmp(&a.co2_per_kwh))
-}
+//pub fn sort_co2(p:&mut [Powerplant]) -> &[Powerplant] {
+ //   p.sort_unstable_by(|a, b| b.co2_per_kwh > (&a.co2_per_kwh))
+//}
 
 pub fn example() -> Result<(), Box<dyn Error>> {
     let mut wtr = csv::Writer::from_writer(io::stdout());

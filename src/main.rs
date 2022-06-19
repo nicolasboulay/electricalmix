@@ -2,6 +2,7 @@ use std::process;
 
 mod csv;
 mod powerplant;
+mod input_event;
 
 use clap::Parser;
 
@@ -19,8 +20,11 @@ fn main() {
 
     let args = Args::parse();
 
-    println!("Input : {}", args.input_file_name);
+    println!("Input file : {}", args.input_file_name);
     
+    let e = input_event::from_file(args.input_file_name).unwrap();
+
+    println!("Input events : {}", e.daily_consumption_in_gwh);
 
     if let Err(err) = csv::example() {
         println!("error running example: {}", err);

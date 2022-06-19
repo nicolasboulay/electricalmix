@@ -1,3 +1,13 @@
 {
-    "daily_consumption_in_gwh" : 1000.0
+    "events" : [
+        {   "date" : "2022 01 01",
+            "command": { "SetDailyConsumption" : { "gwh": 100.0 }}
+        },
+        {   "date" : "2022 01 02",
+            "command": { "SetDailyConsumption" : { "gwh": 1000.0 }}
+        },
+        {   "date" : "2022 01 01",
+            "command": { "CreatePowerplant" : { "kind": "plop", "number": 3, "first_cornerstone": "2001 01 01" }}
+        }
+    ]
 }

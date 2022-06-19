@@ -5,18 +5,36 @@ use std::fs::File;
 use std::io::BufReader;
 use std::path::Path;
 
+mod my_date_format;
+
 #[derive(Serialize, Deserialize, Debug)]
-pub struct Events {
-    pub daily_consumption_in_gwh: f64,
+pub struct EventList {
+    pub events: Vec<Event>,
 }
 
-pub fn from_str(s: &str) -> Result<Events, Box<dyn Error>> {
-    let deserialized: Events = serde_json::from_str(s)?;
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Event {
+    #[serde(with = "my_date_format")]
+    pub date: chrono::NaiveDate,
+    pub command: Command,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub enum Command {
+    SetDailyConsumption { gwh: f64 },    
+    CreatePowerplant { kind : String, number : u32, 
+        #[serde(with = "my_date_format")]    
+        first_cornerstone: chrono::NaiveDate   
+    },
+}
+
+pub fn from_str(s: &str) -> Result<EventList, Box<dyn Error>> {
+    let deserialized: EventList = serde_json::from_str(s)?;
 
     Ok(deserialized)
 }
 
-pub fn from_file<P: AsRef<Path>>(path: P) -> Result<Events, Box<dyn Error>> {
+pub fn from_file<P: AsRef<Path>>(path: P) -> Result<EventList, Box<dyn Error>> {
     // Open the file in read-only mode with buffer.
     let file = File::open(path)?;
     let reader = BufReader::new(file);
@@ -34,7 +52,7 @@ mod tests {
     #[test]
     fn basic() {
         let s:String = serde_json::json!({"daily_consumption_in_gwh" : 1000.0}).to_string();
-        let e: Events = from_str(&s).unwrap();
+        let e: EventList = from_str(&s).unwrap();
         assert_eq!(e.daily_consumption_in_gwh, 1000.0);
     }
 }

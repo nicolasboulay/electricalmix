@@ -3,7 +3,6 @@ use std::process;
 mod csv;
 mod powerplant;
 mod input_event;
-
 use clap::Parser;
 
 /// electric mix simulator
@@ -24,7 +23,7 @@ fn main() {
     
     let e = input_event::from_file(args.input_file_name).unwrap();
 
-    println!("Input events : {}", e.daily_consumption_in_gwh);
+    println!("Input events : {:?}", e);
 
     if let Err(err) = csv::example() {
         println!("error running example: {}", err);
